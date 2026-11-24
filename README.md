@@ -339,8 +339,8 @@ MIT
 
 ---
 
-## Author
+## Authors
 
-Built by [Somya and team ](https://github.com/12somyasahu)
+Built by [Utkarsh Mishra](https://github.com/utkarshmishra0610) and [Utkarsh Choudhary](https://github.com/uttkarshh07)
 
 If this helped you, give it a star ⭐
