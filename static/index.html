@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>GymGuard - Injury Prediction</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+<div id="hdr">
+  <div style="display:flex;align-items:center">
+    <h1>GYMGUARD</h1>
+    <span class="htag">v2 GPU</span>
+  </div>
+  <div class="hright">
+    <div id="fpsPill">-- FPS</div>
+    <div class="statusPill">
+      <div class="sdot" id="sdot"></div>
+      <span id="sTxt">OFFLINE</span>
+    </div>
+  </div>
+</div>
+
+<div id="body">
+
+  <div id="left">
+    <div id="videoBox">
+      <div id="alertBar"></div>
+      <div id="placeholder">
+        <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" opacity=".25">
+          <rect x="2" y="7" width="20" height="14" rx="2"/>
+          <path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/>
+          <circle cx="12" cy="13" r="3"/>
+        </svg>
+        <p>PRESS START ANALYSIS</p>
+      </div>
+      <img id="feed" alt=""/>
+      <div id="exLabel"></div>
+      <div id="gpuLabel">RTX 3050 - CUDA</div>
+
+      <!-- Video progress overlay -->
+      <div id="videoProgress" style="display:none; position:absolute; bottom:0; left:0; right:0;
+           background:rgba(0,0,0,.7); padding:10px 14px;">
+        <div style="font-family:'Space Mono',monospace; font-size:.6rem; color:#fff; letter-spacing:1px; margin-bottom:6px;">
+          ANALYZING VIDEO -- <span id="progressTxt">0 frames</span>
+        </div>
+        <div style="height:3px; background:#1c1c2e; border-radius:2px;">
+          <div id="progressBar" style="height:100%; background:#448aff; border-radius:2px; width:0%; transition:width .2s;"></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="historyBox">
+      <div class="hrow">
+        <span class="slabel">RISK HISTORY - LAST 60 SECONDS</span>
+        <div class="hbtns">
+          <input type="file" id="vidInput" accept="video/*" style="display:none" onchange="analyzeVideo(this)"/>
+          <button class="hbtn" onclick="document.getElementById('vidInput').click()">LOAD VIDEO</button>
+          <button class="hbtn" onclick="clearHistory()">CLEAR</button>
+          <button class="hbtn" onclick="exportCSV()">EXPORT CSV</button>
+        </div>
+      </div>
+      <canvas id="histChart"></canvas>
+      <div id="exLegend"></div>
+    </div>
+  </div>
+
+  <div id="sidebar">
+
+    <div class="scard">
+      <div class="slabel">INJURY RISK SCORE</div>
+      <div class="gaugeRow">
+        <div class="gWrap">
+          <svg class="gSvg" viewBox="0 0 100 100">
+            <circle class="gTrack" cx="50" cy="50" r="40"/>
+            <circle class="gFill"  cx="50" cy="50" r="40" id="gFill"/>
+          </svg>
+          <div class="gCenter">
+            <div class="gNum" id="gNum">0</div>
+            <div class="gSub">/100</div>
+          </div>
+        </div>
+        <div>
+          <div class="rLevel" id="rLevel">AWAITING</div>
+          <div class="rDesc"  id="rDesc">Start analysis to begin scoring.</div>
+        </div>
+      </div>
+      <div class="statRow">
+        <div class="statBox"><div class="statV" id="sAvg">--</div><div class="statK">AVG RISK</div></div>
+        <div class="statBox"><div class="statV" id="sPeak">--</div><div class="statK">PEAK</div></div>
+        <div class="statBox"><div class="statV" id="sTime">0s</div><div class="statK">SESSION</div></div>
+      </div>
+    </div>
+
+    <div class="scard">
+      <div class="slabel">FORM ISSUES</div>
+      <div id="issuesList" style="margin-top:10px">
+        <div class="okMsg">&#10003; No issues -- awaiting analysis</div>
+      </div>
+    </div>
+
+    <div class="scard">
+      <div class="slabel">JOINT ANGLES</div>
+      <div class="angleGrid" id="angleGrid">
+        <div class="angleItem">
+          <div class="angleKey">AWAITING</div>
+          <div class="angleVal">--</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="btnWrap">
+      <button id="mainBtn" onclick="startStream()">START ANALYSIS</button>
+    </div>
+  </div>
+</div>
+
+<script src="/static/js/chart.js"></script>
+<script src="/static/js/ui.js"></script>
+<script src="/static/js/websocket.js"></script>
+</body>
+</html>
